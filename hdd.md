@@ -48,15 +48,22 @@
 - **SR-IOV**：不支持
 - **中断**：支持 MSI / MSI-X，支持Legacy Interrupt
 - **Resizable BAR**：支持
+- **iATU**：支持内部地址转换单元（Internal Address Translation Unit）
 - **FLR**：支持功能级复位
 - **Partial Reset**：每个 PCIe Link 支持独立 partial reset
 - **Hot Reset**：支持软件控制延迟恢复机制
+- **Virtual Channel**：支持 1 个 VC
+- **Max Payload Size**：支持 256B
+- **DMA Engine**：支持 8 通道（4 RX + 4 TX）DMA 引擎
 - **功能安全**：支持，[TBD] 具体机制
 - **AER**：支持高级错误上报
+- **RAS DP**：支持 Data Protect 功能
 - **ASPM**：支持 L0s, L1；不支持 L1.1 / L1.2 / L2
 - **PCI-PM**：支持 PCI Power Management（D-state），链路可进入 L1
 - **SRIS**：支持独立参考时钟
 - **PTM**：支持精确时间测量
+- **PIPE 接口**：支持 PIPE 4.4.1 规范
+- **时钟结构**：PCLK 作为 PHY 输出时钟
 - **热插拔**：不支持
 - **ATS**：不支持地址转换服务
 
