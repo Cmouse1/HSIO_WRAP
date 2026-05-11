@@ -92,7 +92,7 @@
 
 #### 3.1.1 顶层结构
 
-![顶层架构图](./images/top_architecture.png)
+<img src="./images/top_architecture.png" alt="顶层架构图" width="80%">
 
 <a id="fig-top-arch"></a>**图 1 顶层架构图**
 
@@ -107,13 +107,13 @@
 
 **sys_hsio_pcie** 的 bifurcation 交换网络：
 
-![sys_hsio_pcie bifurcation fabric](./images/pcie_bifurcation_fabric.png)
+<img src="./images/pcie_bifurcation_fabric.png" alt="sys_hsio_pcie bifurcation fabric" width="80%">
 
 <a id="fig-pcie-fabric"></a>**图 2 sys_hsio_pcie Bifurcation Fabric**
 
 **sys_hsio_hybrid** 的 bifurcation 交换网络：
 
-![sys_hsio_hybrid bifurcation fabric](./images/hybrid_bifurcation_fabric.png)
+<img src="./images/hybrid_bifurcation_fabric.png" alt="sys_hsio_hybrid bifurcation fabric" width="80%">
 
 <a id="fig-hybrid-fabric"></a>**图 3 sys_hsio_hybrid Bifurcation Fabric**
 
@@ -123,11 +123,11 @@
 
 ### 3.2 Clock and Reset
 
-![时钟架构图](./images/clock_diagram.png)
+<img src="./images/clock_diagram.png" alt="时钟架构图" width="80%">
 
 <a id="fig-clock"></a>**图 4 时钟架构图**
 
-![复位架构图](./images/reset_diagram.png)
+<img src="./images/reset_diagram.png" alt="复位架构图" width="80%">
 
 <a id="fig-reset"></a>**图 5 复位架构图**
 
@@ -135,7 +135,7 @@
 
 [TBD] 模块划分、hierarchy 等粗略描述
 
-![module division](./images/module_division.png)
+<img src="./images/module_division.png" alt="module division" width="80%">
 
 <a id="fig-module-div"></a>**图 8 Module Division**
 
@@ -224,7 +224,7 @@ sys_hsio_pcie 的 lane 分配见下表，复用拓扑见下图。
 
 **复用关系图**
 
-![phy_pcie bifurcation 拓扑](./images/phy_pcie_bifurcation.png)
+<img src="./images/phy_pcie_bifurcation.png" alt="phy_pcie bifurcation 拓扑" width="80%">
 
 <a id="fig-phy0"></a>**图 6 phy_pcie Bifurcation 拓扑**
 
@@ -246,7 +246,7 @@ sys_hsio_hybrid 的 lane 分配见下表，复用拓扑见下图。
 
 **复用拓扑图**
 
-![phy_hybrid bifurcation 拓扑](./images/phy_hybrid_bifurcation.png)
+<img src="./images/phy_hybrid_bifurcation.png" alt="phy_hybrid bifurcation 拓扑" width="80%">
 
 <a id="fig-phy1"></a>**图 7 phy_hybrid Bifurcation 拓扑**
 
