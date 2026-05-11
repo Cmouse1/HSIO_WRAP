@@ -5,6 +5,48 @@
 
 ---
 
+## 目录
+
+- [1. Introduction](#1-introduction)
+- [2. Feature List](#2-feature-list)
+  - [2.1 PCIe 控制器特性](#21-pcie-控制器特性)
+  - [2.2 PHY Bifurcation](#22-phy-bifurcation)
+  - [2.3 SMMU](#23-smmu)
+- [3. Functional Description](#3-functional-description)
+  - [3.1 Architecture](#31-architecture)
+    - [3.1.1 顶层结构](#311-顶层结构)
+    - [3.1.2 组件互联](#312-组件互联)
+    - [3.1.3 Bifurcation 架构](#313-bifurcation-架构)
+    - [3.1.4 数据路径](#314-数据路径)
+  - [3.2 Clock and Reset](#32-clock-and-reset)
+  - [3.3 Design Description](#33-design-description)
+  - [3.4 Matrix](#34-matrix)
+    - [3.4.1 hsio_bus](#341-hsio_bus)
+    - [3.4.2 hsio_sub_bus](#342-hsio_sub_bus)
+  - [3.5 Sub-IPs](#35-sub-ips)
+    - [3.5.1 APR](#351-apr)
+    - [3.5.2 XAF](#352-xaf)
+    - [3.5.3 ecc_aggr](#353-ecc_aggr)
+    - [3.5.4 CKM](#354-ckm)
+    - [3.5.5 32g-PHY](#355-32g-phy)
+    - [3.5.6 PCIe-Core](#356-pcie-core)
+    - [3.5.7 SYS-ETH](#357-sys-eth)
+    - [3.5.8 APB-BUS](#358-apb-bus)
+  - [3.6 IO Interfaces](#36-io-interfaces)
+  - [3.7 Interrupt](#37-interrupt)
+  - [3.8 Address Mapping](#38-address-mapping)
+- [4. Block Description](#4-block-description)
+  - [4.1 sys_hsio_pcie](#41-sys_hsio_pcie)
+  - [4.2 sys_hsio_hybrid](#42-sys_hsio_hybrid)
+  - [4.3 SMMU](#43-smmu)
+  - [4.4 NOC 总线](#44-noc-总线)
+  - [4.5 PCIe Controller](#45-pcie-controller)
+    - [4.5.1 Architecture](#451-architecture)
+    - [4.5.2 Initialization](#452-initialization)
+    - [4.5.3 Functions](#453-functions)
+- [5. 待补充信息清单](#5-待补充信息清单)
+- [6. 变更记录](#6-变更记录)
+
 ## Figure List
 
 - [图 1 顶层架构图](#fig-top-arch)
@@ -243,6 +285,20 @@ sys_hsio_hybrid 的 lane 分配见下表。
 [TBD] 详细描述
 
 ### 4.4 NOC 总线
+
+[TBD]
+
+### 4.5 PCIe Controller
+
+#### 4.5.1 Architecture
+
+[TBD]
+
+#### 4.5.2 Initialization
+
+[TBD]
+
+#### 4.5.3 Functions
 
 [TBD]
 
