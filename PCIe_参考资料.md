@@ -12,9 +12,7 @@
 - [图 3 sys_hsio_hybrid Bifurcation Fabric](#fig-hybrid-fabric)
 - [图 4 时钟架构图](#fig-clock)
 - [图 5 复位架构图](#fig-reset)
-- [图 6 phy_pcie Bifurcation 拓扑](#fig-phy0)
-- [图 7 phy_hybrid Bifurcation 拓扑](#fig-phy1)
-- [图 8 Module Division](#fig-module-div)
+- [图 6 Module Division](#fig-module-div)
 
 ## Table List
 
@@ -211,7 +209,7 @@ NOC 总线由两条独立的总线组成：
 
 **复用方式**：bifurcation（lane 拆分）
 
-sys_hsio_pcie 的 lane 分配见下表，复用拓扑见下图。
+sys_hsio_pcie 的 lane 分配见下表。
 
 <a id="tbl-pcie-lane"></a>
 **表 1 sys_hsio_pcie 控制器 Lane 分配**
@@ -222,17 +220,11 @@ sys_hsio_pcie 的 lane 分配见下表，复用拓扑见下图。
 | PCIe X1 Controller | Lane2 | 与 X4 共享 lane |
 | PCIe X1 Controller | Lane3 | 与 X4 共享 lane |
 
-**复用关系图**
-
-<img src="./images/phy_pcie_bifurcation.png" alt="phy_pcie bifurcation 拓扑" width="80%">
-
-<a id="fig-phy0"></a>**图 6 phy_pcie Bifurcation 拓扑**
-
 ### 4.2 sys_hsio_hybrid
 
 **复用方式**：bifurcation + 跨协议共享（PCIe + Ethernet）
 
-sys_hsio_hybrid 的 lane 分配见下表，复用拓扑见下图。
+sys_hsio_hybrid 的 lane 分配见下表。
 
 <a id="tbl-hybrid-lane"></a>
 **表 2 sys_hsio_hybrid 控制器 Lane 分配**
@@ -243,12 +235,6 @@ sys_hsio_hybrid 的 lane 分配见下表，复用拓扑见下图。
 | ETH Controller #0 | Lane1 | XGMII-10G/5G |
 | ETH Controller #1 | Lane2 | XGMII-10G/5G |
 | ETH Controller #2 | Lane3 | XGMII-10G/5G |
-
-**复用拓扑图**
-
-<img src="./images/phy_hybrid_bifurcation.png" alt="phy_hybrid bifurcation 拓扑" width="80%">
-
-<a id="fig-phy1"></a>**图 7 phy_hybrid Bifurcation 拓扑**
 
 ### 4.3 SMMU
 
