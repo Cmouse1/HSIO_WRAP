@@ -12,8 +12,8 @@
 - [图 3 sys_hsio_hybrid Bifurcation Fabric](#fig-hybrid-fabric)
 - [图 4 时钟架构图](#fig-clock)
 - [图 5 复位架构图](#fig-reset)
-- [图 6 PHY0 Bifurcation 拓扑](#fig-phy0)
-- [图 7 PHY1 Bifurcation 拓扑](#fig-phy1)
+- [图 6 phy_pcie Bifurcation 拓扑](#fig-phy0)
+- [图 7 phy_hybrid Bifurcation 拓扑](#fig-phy1)
 - [图 8 Module Division](#fig-module-div)
 
 ## Table List
@@ -93,7 +93,7 @@
 
 - **PCIe Controller**：5 个PCIe Controller和2个Ethernet Controller通过 bifurcation 连接到两个 PHY。控制器与 PHY 之间的 lane 映射在初始化阶段静态配置。
 - **SMMU**：位于 所有 Controller 与 mnoc 之间，为所有 PCIe Controller 提供统一的 DMA 地址转换服务。每个 EP 发起的 DMA 事务经过 SMMU 转换为系统物理地址。
-- **Ethernet Controller**：2 个  Ethernet Controller 固定连接到 PHY1（sys_hsio_hybrid）的 Lane2 和 Lane3。
+- **Ethernet Controller**：2 个  Ethernet Controller 固定连接到 sys_hsio_hybrid 的 Lane1/Lane2/Lane3。
 - **NOC 总线**：包含两条独立总线。**hsio_bus** 由 snoc2hsio（下行）和 hsio2ring（上行）两条隔离通路组成；**hsio_sub_bus** 将 hsio2ring 数据通路拆分为 hsio2mnoc（DDR 地址空间）和 hsio2snoc（非 DDR 地址空间）。
 
 #### 3.1.3 Bifurcation 架构
@@ -217,9 +217,9 @@ sys_hsio_pcie 的 lane 分配见下表，复用拓扑见下图。
 
 **复用关系图**
 
-![PHY0 bifurcation 拓扑](./images/phy0_bifurcation.png)
+![phy_pcie bifurcation 拓扑](./images/phy_pcie_bifurcation.png)
 
-<a id="fig-phy0"></a>**图 6 PHY0 Bifurcation 拓扑**
+<a id="fig-phy0"></a>**图 6 phy_pcie Bifurcation 拓扑**
 
 ### 4.2 sys_hsio_hybrid
 
@@ -239,9 +239,9 @@ sys_hsio_hybrid 的 lane 分配见下表，复用拓扑见下图。
 
 **复用拓扑图**
 
-![PHY1 bifurcation 拓扑](./images/phy1_bifurcation.png)
+![phy_hybrid bifurcation 拓扑](./images/phy_hybrid_bifurcation.png)
 
-<a id="fig-phy1"></a>**图 7 PHY1 Bifurcation 拓扑**
+<a id="fig-phy1"></a>**图 7 phy_hybrid Bifurcation 拓扑**
 
 ### 4.3 SMMU
 
@@ -269,7 +269,7 @@ sys_hsio_hybrid 的 lane 分配见下表，复用拓扑见下图。
 | 版本 | 日期 | 变更内容 |
 | :--- | :--- | :--- |
 | 0.1 | [TBD] | 初始 PHY 映射 |
-| 0.2 | [TBD] | 修正 PHY1 lane 分配 |
+| 0.2 | [TBD] | 修正 phy_hybrid lane 分配 |
 | 0.3 | [TBD] | 增加 PCIe/ETH 详细特性 |
 | 0.4 | [TBD] | 按公司模板重组章节结构 |
 | 0.5 | [TBD] | 调整 §3/§4 结构：Functional Description 分 5 小节，Block Description 承接 PHY 内容 |
