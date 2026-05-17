@@ -67,7 +67,7 @@
 
 `sys_pcie_eth_pwr_wrap` 是一个多协议端口聚合子系统，包含：
 
-- 5 个 PCIe Controller
+- 4 个 PCIe Controller（2×X2 + 2×X1）
 - 3 个 Ethernet Controller
 - 2 个 X4 32G-PHY（物理层接口）
 - 1 个 SMMU
@@ -81,7 +81,7 @@
 
 ### 2.1 PCIe 控制器特性
 
-**适用**：全部 5 个 PCIe Controller
+**适用**：全部 4 个 PCIe Controller
 
 - **速率**：支持 Gen1 / Gen2 / Gen3 / Gen4 / Gen5，向下兼容，自动协商
 - **双模式**：支持 Dual Mode（EP & RC），可配置
@@ -139,7 +139,7 @@
 
 #### 3.1.2 组件互联
 
-- **PCIe Controller**：5 个PCIe Controller和2个Ethernet Controller通过 bifurcation 连接到两个 PHY。控制器与 PHY 之间的 lane 映射在初始化阶段静态配置。
+- **PCIe Controller**：4 个 PCIe Controller（sys_hsio_pcie：2×X2 + 1×X1；sys_hsio_hybrid：1×X1）和 3 个 Ethernet Controller 通过 bifurcation 连接到两个 PHY。控制器与 PHY 之间的 lane 映射在初始化阶段静态配置。
 - **SMMU**：位于 所有 Controller 与 mnoc 之间，为所有 PCIe Controller 提供统一的 DMA 地址转换服务。每个 EP 发起的 DMA 事务经过 SMMU 转换为系统物理地址。
 - **Ethernet Controller**：2 个  Ethernet Controller 固定连接到 sys_hsio_hybrid 的 Lane1/Lane2/Lane3。
 - **NOC 总线**：包含两条独立总线。**hsio_bus** 由 snoc2hsio（下行）和 hsio2ring（上行）两条隔离通路组成；**hsio_sub_bus** 将 hsio2ring 数据通路拆分为 hsio2mnoc（DDR 地址空间）和 hsio2snoc（非 DDR 地址空间）。
