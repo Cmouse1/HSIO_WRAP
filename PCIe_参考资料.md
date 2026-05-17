@@ -204,35 +204,35 @@ NOC 总线由两条独立的总线组成：
 
 ### 3.5 Sub-IPs
 
-#### 3.5.1 APR
+#### 3.5.1 PCIe-Core
 
 [TBD]
 
-#### 3.5.2 XAF
+#### 3.5.2 32g-PHY
 
 [TBD]
 
-#### 3.5.3 ecc_aggr
+#### 3.5.3 APB-BUS
 
 [TBD]
 
-#### 3.5.4 CKM
+#### 3.5.4 APR
 
 [TBD]
 
-#### 3.5.5 32g-PHY
+#### 3.5.5 XAF
 
 [TBD]
 
-#### 3.5.6 PCIe-Core
+#### 3.5.6 ecc_aggr
 
 [TBD]
 
-#### 3.5.7 SYS-ETH
+#### 3.5.7 CKM
 
 [TBD]
 
-#### 3.5.8 APB-BUS
+#### 3.5.8 SYS-ETH
 
 [TBD]
 
