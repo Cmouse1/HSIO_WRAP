@@ -115,6 +115,7 @@
 - **跨协议共享**：支持 PCIe 与 Ethernet 跨协议 PHY 共享
 - **配置方式**：上电初始化时通过寄存器配置 bifurcation 模式
 - **Static Bifurcation**：Lane 分配在初始化阶段静态确定，运行期间不可动态切换
+- **Lane3 复用**：sys_hsio_pcie 的 Lane3 由独立的 bifurcation mux 控制器管理，在 X2（Lane2/3）和 X1（Lane3）之间静态切换
 
 ### 2.3 SMMU
 
@@ -145,7 +146,11 @@
 
 #### 3.1.3 Bifurcation 架构
 
-**sys_hsio_pcie** 的 bifurcation 交换网络：
+**sys_hsio_pcie** 的 bifurcation 交换网络（PHY0 — 纯 PCIe 域）：
+
+- Lane0/1 → PCIe X2 Controller（独立使用）
+- Lane2/3 → PCIe X2 Controller（独立使用）
+- Lane3 同时通过独立的 bifurcation mux 连接到 PCIe X1 Controller，静态切换
 
 ![sys_hsio_pcie bifurcation fabric](./images/pcie_bifurcation_fabric.png)
 
@@ -258,9 +263,9 @@ sys_hsio_pcie 的 lane 分配见下表。
 
 | 控制器 | 通道分配 | 说明 |
 | :--- | :--- | :--- |
-| PCIe X4 Controller | Lane0~Lane3 | 使用全部 4 个 lane |
-| PCIe X1 Controller | Lane2 | 与 X4 共享 lane |
-| PCIe X1 Controller | Lane3 | 与 X4 共享 lane |
+| PCIe X2 Controller | Lane0~Lane1 | 使用 Lane0/1 |
+| PCIe X2 Controller | Lane2~Lane3 | 使用 Lane2/3 |
+| PCIe X1 Controller | Lane3 | 与 Lane2/3 的 X2 共享 Lane3（通过 bifurcation mux 切换） |
 
 ### 4.2 sys_hsio_hybrid
 
@@ -327,6 +332,7 @@ sys_hsio_hybrid 的 lane 分配见下表。
 | 0.8 | [TBD] | 子系统更名为 sys_pcie_eth_pwr_wrap，新增 NOC 总线组件与 Block Description |
 | 0.9 | [TBD] | 补充 §4.4 NOC 总线：hsio_bus 与 hsio_sub_bus 结构描述 |
 | 1.0 | [TBD] | 重组 §3 结构：3.3 Design Description、3.4 Matrix、3.5 Sub-IPs、3.6 IO Interfaces、3.7 Interrupt、3.8 Address Mapping；NOC 内容从 §4.4 移至 §3.4 Matrix |
+| 1.1 | 2026-05-17 | sys_hsio_pcie 取消 X4 Controller，改为 2×X2 + 1×X1；Lane3 由独立 bifurcation mux 控制器在 X2 和 X1 之间静态切换 |
 
 ---
 
