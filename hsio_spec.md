@@ -1,6 +1,6 @@
 # 技术规格书：HDD HSIO PCIe/Ethernet Subsystem
 
-**版本**：1.29
+**版本**：1.34
 **状态**：草稿
 
 ---
@@ -100,7 +100,7 @@
 - **Role**：支持 Endpoint 和 Root Complex/Root Port，启动阶段静态选择。
 - **HDMA**：使用 Controller 内部 HDMA；HDMA channel 数按 X4/X2/X1 profile 差异化配置。
 - **SR-IOV**：支持并启用；PF/VF 数量按 X4/X2/X1 profile 差异化配置。
-- **MSI/MSI-X**：支持 MSI/MSI-X；SR-IOV 场景使用 MSI-X。
+- **MSI/MSI-X**：PF 支持 MSI 和 MSI-X；VF 支持 MSI，VF 是否支持 MSI-X 为 `[TBD]`。
 - **Legacy Interrupt**：支持。
 - **ARI**：支持并启用，用于 SR-IOV function number 扩展。
 - **iATU**：支持 internal iATU；region 数按 X4/X2/X1 profile 差异化配置。
@@ -117,11 +117,11 @@
 - **PIPE 接口**：支持 PIPE 4.4.1。
 - **AXI Manager 接口**：`256bit @ 1GHz`，作为 HDMA 主通道。
 - **AXI Subordinate 接口**：`64bit @ 1GHz`，作为 CPU CSR/config/PIO 从通道，并支持 outbound NP read 完成功能。PIO 表示 Programmed I/O，即 CPU/软件通过寄存器访问方式发起的非 DMA MMIO/config 访问。
-- **ATS/PASID/PRS**：不支持。
+- **ATS/PASID/PRS/TLP Prefix/TPH**：不支持。
 - **Hot-Plug**：不支持。
 - **Resizable BAR**：支持，启用策略为 `[TBD]`。
 - **PTM**：支持，启用策略为 `[TBD]`。
-- **IDE / DPC / eDPC / NPEM / DPA / OBFF / Atomic Operation / TPH / TLP Prefix**：启用策略为 `[TBD]`。
+- **IDE / DPC / eDPC / NPEM / DPA / OBFF / Atomic Operation**：启用策略为 `[TBD]`。
 - **功能安全**：支持，具体机制为 `[TBD]`。
 
 ### 2.3 PHY Bifurcation Feature
@@ -323,11 +323,11 @@ AXI Manager BDP outstanding 基于 AXI 域 BDP 计算，单 request 有效数据
 <a id="tbl-hdma-sriov-profile"></a>
 **表 6 HDMA / SR-IOV 差异化资源配置**
 
-| Profile | Controller | HDMA Channel | PF/VF 配置 | MSI-X 配置 | iATU Region 配置 | 配置影响 |
+| Profile | Controller | HDMA Channel | PF/VF 配置 | Interrupt 配置 | iATU Region 配置 | 配置影响 |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| X4 profile | C0 | 4 channels：2 H2D + 2 D2H | 1 PF + 8 VF | PF 16 entries；每 VF 4 entries | OB 8；IB 8 | 覆盖 X4 Gen5 高吞吐场景；资源、验证和时序压力最高 |
-| X2 profile | C1、C2 | 2 channels：1 H2D + 1 D2H | 1 PF + 4 VF | PF 8 entries；每 VF 2 entries | OB 4；IB 4 | 覆盖 X2 Gen5 中等吞吐场景；资源规模低于 X4 profile |
-| X1 profile | C3 | 2 channels：1 H2D + 1 D2H | 1 PF + 2 VF | PF 4 entries；每 VF 2 entries | OB 2；IB 2 | 覆盖 X1 Gen5 基础吞吐场景；资源占用最小 |
+| X4 profile | C0 | 4 channels：2 H2D + 2 D2H | 1 PF + 8 VF | PF/VF interrupt mode `[TBD]` | OB 8；IB 8 | 覆盖 X4 Gen5 高吞吐场景；资源、验证和时序压力最高 |
+| X2 profile | C1、C2 | 2 channels：1 H2D + 1 D2H | 1 PF + 4 VF | PF/VF interrupt mode `[TBD]` | OB 4；IB 4 | 覆盖 X2 Gen5 中等吞吐场景；资源规模低于 X4 profile |
+| X1 profile | C3 | 2 channels：1 H2D + 1 D2H | 1 PF + 2 VF | PF/VF interrupt mode `[TBD]` | OB 2；IB 2 | 覆盖 X1 Gen5 基础吞吐场景；资源占用最小 |
 
 Controller 在低于最大 lane 数运行时仍使用所属 profile，不进行运行期资源裁剪。C0 在 X2 active mode 下仍使用 X4 profile。
 
@@ -336,6 +336,8 @@ Controller 在低于最大 lane 数运行时仍使用所属 profile，不进行�
 SR-IOV 作为 EP mode 功能启用。RC mode 下本端不启用 VF；RC mode 用于枚举、配置和访问下游 SR-IOV EP 的 PF/VF。
 
 每个 Controller 配置 1 个 PF。VF 数量按 X4/X2/X1 profile 分别配置为 8/4/2。SR-IOV 使用 internal VF，不使用 external VF；VF allocation 使用 static allocation，不支持 VF migration。VF routing ID 初始配置为 `First VF Offset = 1`、`VF Stride = 1`。X4 profile 的 1 PF + 8 VF 依赖 ARI-capable hierarchy。
+
+SR-IOV enable 与 MSI/MSI-X enable 不是同一个功能开关。PF 固定支持 MSI 和 MSI-X；VF 固定支持 MSI，VF 是否支持 MSI-X 为 `[TBD]`。
 
 HDMA 寄存器归属 PF。VF 不直接访问 HDMA 全局配置寄存器。VF 通过 VF BAR 中的 queue/doorbell/status window 提交 DMA 请求；PF software 或 SoC DMA virtualization logic 将 VF 请求映射到 HDMA channel，并配置 `HDMA_FUNC_NUM_OFF_[WR|RD]CH_i` 中的 PF/VF/VF_EN 字段。
 
@@ -479,11 +481,15 @@ Credit 计算口径如下：
 | Dynamic VF allocation | `DYNAMIC_VF_ENABLE` | 0 | 0 | 0 | 使用 static VF allocation |
 | VF stride always one | `CX_VF_STRIDE_ALWAYS_ONE` | 1 | 1 | 1 | VF Stride 固定为 1 |
 | ARI enable | `CX_ARI_ENABLE` | 1 | 1 | 1 | SR-IOV 场景启用 ARI capability |
-| MSI-X capability | `MSIX_CAP_ENABLE` | 1 | 1 | 1 | PF 支持 MSI-X |
-| Integrated MSI-X | `MSIX_TABLE_EN` | 1 | 1 | 1 | 使用 Controller 内部 MSI-X table/PBA |
-| PF MSI-X table size | `MSIX_TABLE_SIZE_0` | 15 | 7 | 3 | 字段值为 PF entry 数 - 1 |
-| VF MSI-X capability | `VF_MSIX_CAP_ENABLE` | 1 | 1 | 1 | VF 支持 MSI-X |
-| VF MSI-X table size | `[TBD]` | 3 | 1 | 1 | 字段值为每 VF entry 数 - 1；CoreConsultant 参数名为 `[TBD]` |
+| PF MSI capability | `[TBD]` | 1 | 1 | 1 | PF 支持 MSI；具体参数名为 `[TBD]` |
+| PF MSI-X capability | `MSIX_CAP_ENABLE` | 1 | 1 | 1 | PF 支持 MSI-X |
+| Integrated MSI-X | `MSIX_TABLE_EN` | 1 | 1 | 1 | PF MSI-X table/PBA 使用 Controller 内部实现；VF MSI-X 是否使用该机制为 `[TBD]` |
+| PF MSI-X table size | `MSIX_TABLE_SIZE_0` | `[TBD]` | `[TBD]` | `[TBD]` | PF MSI-X entry 数由 PF interrupt vector 规划决定 |
+| VF MSI capability | `VF_MSI_CAP_ENABLE` | 1 | 1 | 1 | VF 支持 MSI |
+| VF MSI-X capability | `VF_MSIX_CAP_ENABLE` | `[TBD]` | `[TBD]` | `[TBD]` | VF 是否支持 MSI-X 为 `[TBD]` |
+| VF MSI-X table size | `[TBD]` | `[TBD]` | `[TBD]` | `[TBD]` | VF MSI-X entry 数由 VF interrupt vector 规划决定；CoreConsultant 参数名为 `[TBD]` |
+| TLP Prefix | `[TBD]` | 0 | 0 | 0 | 不支持 TLP Prefix；具体 CoreConsultant 参数名为 `[TBD]` |
+| TPH requester | `[TBD]` | 0 | 0 | 0 | 不支持 TPH；具体 CoreConsultant 参数名为 `[TBD]` |
 | iATU enable | `CX_INTERNAL_ATU_ENABLE` | 1 | 1 | 1 | 使用 internal iATU |
 | outbound iATU region | `CX_ATU_NUM_OUTBOUND_REGIONS` | 8 | 4 | 2 | OB region 数 |
 | inbound iATU region | `CX_ATU_NUM_INBOUND_REGIONS` | 8 | 4 | 2 | IB region 数 |
@@ -614,6 +620,11 @@ Ethernet manager 是 Ethernet 的 DMA 口，通过异步边界接入 `hsio_bus`�
 | 1.27 | 2026-07-22 | 按图片占位文件名更新 Clock/Reset 图引用；新增 harden 切分章节和 `module_division.png`；新增 `sys_pcie` block 描述和 `sys_pcie_diagram.png` 占位图 |
 | 1.28 | 2026-07-22 | 将表 11 中 CplD / Posted Data Credit 表述改为 Payload Data Credit 等效校核目标，并补充该列的计算口径和适用路径 |
 | 1.29 | 2026-07-22 | 重构表 11，分列列出 Posted/Non-Posted/Completion 的 Header/Data credit 校核目标，并明确 HDMA read data 与 HDMA write data 使用不同 credit pool |
+| 1.30 | 2026-07-22 | 明确不支持 TLP Prefix 及其相关 ATS/PASID/PRS/TPH 功能；澄清 SR-IOV 与 MSI/MSI-X capability 的关系 |
+| 1.31 | 2026-07-22 | 将 PF/VF interrupt mode 调整为待定；保留 SR-IOV 启用时 MSI 或 MSI-X capability 至少启用一种的约束，不再将 MSI-X 作为已选定配置 |
+| 1.32 | 2026-07-22 | 补充 `VF_MSI_CAP_ENABLE`，明确 VF MSI 与 VF MSI-X capability 具备独立配置开关；PF/VF interrupt mode 仍保持待定 |
+| 1.33 | 2026-07-22 | 明确 PF 支持 MSI 和 MSI-X，VF 支持 MSI，VF 是否支持 MSI-X 保持待定 |
+| 1.34 | 2026-07-22 | 简化 Feature List 中 ATS/PASID/PRS/TLP Prefix/TPH 表述，统一为不支持 |
 
 ---
 
